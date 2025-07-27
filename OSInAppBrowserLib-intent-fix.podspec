@@ -1,5 +1,5 @@
 Pod::Spec.new do |spec|
-  spec.name                   = 'OSInAppBrowserLib'
+  spec.name                   = 'OSInAppBrowserLib-intent-fix'
   spec.version                = '1.0.0'
 
   spec.summary                = 'The `OSInAppBrowserLib` is a library that provides a web browser view to load a web page within a Mobile Application.'
@@ -17,11 +17,11 @@ Pod::Spec.new do |spec|
   - Open a URL in a Web View.
   DESC
 
-  spec.homepage               = 'https://github.com/OutSystems/OSInAppBrowserLib-iOS'
+  spec.homepage               = 'https://github.com/deepcyan-ai/OSInAppBrowserLib-iOS'
   spec.license                = { :type => 'MIT', :file => 'LICENSE' }
   spec.author                 = { 'OutSystems Mobile Ecosystem' => 'rd.mobileecosystem.team@outsystems.com' }
   
-  spec.source                 = { :http => "https://github.com/OutSystems/OSInAppBrowserLib-iOS/releases/download/#{spec.version}/OSInAppBrowserLib.zip", :type => "zip" }
+  spec.source                 = { :http => "https://github.com/deepcyan-ai/OSInAppBrowserLib-iOS/releases/download/#{spec.version}/OSInAppBrowserLib.zip", :type => "zip" }
   spec.vendored_frameworks    = "OSInAppBrowserLib.xcframework"
 
   spec.ios.deployment_target  = '13.0'
