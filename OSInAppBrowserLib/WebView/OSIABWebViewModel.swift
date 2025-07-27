@@ -160,7 +160,7 @@ extension OSIABWebViewModel: WKNavigationDelegate {
         guard let url = navigationAction.request.url, url == navigationAction.request.mainDocumentURL else { return decisionHandler(.cancel) }
         
         // if is an app store, tel, sms, mailto or geo link, let the system handle it, otherwise it fails to load it
-        if ["itms-appss", "itms-apps", "tel", "sms", "mailto", "geo"].contains(url.scheme) {
+        if ["itms-appss", "itms-apps", "tel", "sms", "mailto", "geo", "upi", "tez", "gpay", "googlepay", "paytm", "paytmmp", "phonepe", "ppe", "cred"].contains(url.scheme) {
             webView.stopLoading()
             self.callbackHandler.onDelegateURL(url)
             shouldStart = false
