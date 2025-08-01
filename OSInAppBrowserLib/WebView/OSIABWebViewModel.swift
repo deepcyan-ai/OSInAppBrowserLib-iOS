@@ -155,37 +155,53 @@ class OSIABWebViewModel: NSObject, ObservableObject {
 // MARK: - WKNavigationDelegate implementation
 extension OSIABWebViewModel: WKNavigationDelegate {
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        var shouldStart = true
+        var openAppRedirect = false
         
-        guard let url = navigationAction.request.url, url == navigationAction.request.mainDocumentURL else { return decisionHandler(.cancel) }
-        print("decidePolicyFor \(url)")
-        
-        // if is an app store, tel, sms, mailto or geo link, let the system handle it, otherwise it fails to load it
-        if ["itms-appss", "itms-apps", "tel", "sms", "mailto", "geo", "upi", "tez", "gpay", "googlepay", "paytm", "paytmmp", "phonepe", "ppe", "cred"].contains(url.scheme) {
-            print("url scheme matched \(url)")
-            let canOpen = UIApplication.shared.canOpenURL(url)
-            print("url scheme canOpen \(canOpen)")
-	    if (canOpen) {
-		    UIApplication.shared.open(url, options: [:], completionHandler: nil)
-		    print("url scheme open canOpen)")
-		    webView.stopLoading()
-		    self.callbackHandler.onDelegateURL(url)
-		    shouldStart = false
-	    }
-	    else {
-		    shouldStart = true
-	    }
-	}
-        
-        if shouldStart {
-            if navigationAction.targetFrame != nil {
-                decisionHandler(.allow)
-            } else {
-                webView.load(navigationAction.request)
-                decisionHandler(.cancel)
-            }
+        print("decidePolicyFor pre guard \(navigationAction.request.url)")
+        if let url = navigationAction.request.url { 
+           //, url == navigationAction.request.mainDocumentURL else { return decisionHandler(.cancel) }
+
+           print("decidePolicyFor \(url)")
+           
+           // if is an app store, tel, sms, mailto or geo link, let the system handle it, otherwise it fails to load it
+           if ["itms-appss", "itms-apps", "tel", "sms", "mailto", "geo", "upi", "tez", "jinimoney", "gpay", "googlepay", "paytm", "paytmmp", "phonepe", "ppe", "cred", "credpay", "popclubapp", "bhim"].contains(url.scheme) {
+               print("url scheme matched \(url)")
+               let canOpen = UIApplication.shared.canOpenURL(url)
+               print("decidePolicyFor url scheme canOpen \(canOpen)")
+	       if (canOpen) {
+	   	    UIApplication.shared.open(url, options: [:], completionHandler: nil)
+	   	    print("url scheme open canOpen)")
+	   	    openAppRedirect = true
+	       }
+	       else {
+	   	        openAppRedirect = false
+	       }
+	   } else {
+               print("url scheme not matched \(url)")
+                    if url.host == "app.y1card.com" {
+                        print("app.y1card.com")
+                        if let rurl = URL(string: "jinimoney://authorised/goals") {
+	   	        UIApplication.shared.open(rurl, options: [:], completionHandler: nil)
+}
+	   	        openAppRedirect = true
+                    } else {
+               openAppRedirect = false
+                    }
+           }
+           
+           if openAppRedirect {
+               // if navigationAction.targetFrame != nil {
+               //     decisionHandler(.allow)
+               // } else {
+               //     webView.load(navigationAction.request)
+               //     decisionHandler(.cancel)
+               // }
+               decisionHandler(.cancel)
+           } else {
+	       decisionHandler(.allow)
+           }
         } else {
-            decisionHandler(.cancel)
+           decisionHandler(.cancel)
         }
     }
     
