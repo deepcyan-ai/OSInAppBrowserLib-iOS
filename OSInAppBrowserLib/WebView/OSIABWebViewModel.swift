@@ -214,10 +214,12 @@ extension OSIABWebViewModel: WKNavigationDelegate {
     }
     
     func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
+               print("url scheme not matched \(error)")
         self.webView(webView, didFailedNavigation: "didFailNavigation", with: error)
     }
     
     func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
+               print("url scheme not matched \(error)")
         self.webView(webView, didFailedNavigation: "didFailProvisionalNavigation", with: error)
     }
     
